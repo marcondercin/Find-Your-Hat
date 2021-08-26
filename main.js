@@ -13,11 +13,9 @@ function checkMove(field, position) {
         if (field[0].length > position[0] >= 0 && field.length > position[1] >= 0) {
             if (field[position[0]][position[1]] == hole) {
                 userInHole = true;
-                console.log('You fell in a hole.');
             }
             else if (field[position[0]][position[1]] == hat) {
                 userWin = true;
-                console.log('You found your hat!');
             }
             else {
                 field[position[0]][position[1]] = pathCharacter;
@@ -42,8 +40,7 @@ class Field {
 
     moveUp() {
         if (this.position[0] === 0) {
-            userOutOfBounds = true;
-            break;
+            throw Error('You went out of bounds.');
         }
         const y = this.position[0] - 1;
         const x = this.position[1];
@@ -67,7 +64,7 @@ class Field {
 
     moveLeft() {
         if (this.position[1] === 0) {
-            throw Error('Out of bounds.');
+            throw Error('You went out of bounds.');
         }
         const y = this.position[0];
         const x = this.position[1] - 1;
@@ -94,12 +91,16 @@ function main() {
         switch (direction) {
             case 'up':
                 myField.moveUp();
+                break;
             case 'down':
                 myField.moveDown();
+                break;
             case 'left':
                 myField.moveLeft();
+                break;
             case 'right':
                 myField.moveRight();
+                break;
             default:
                 console.log('Enter a valid direction.');
         }
