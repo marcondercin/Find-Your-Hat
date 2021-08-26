@@ -10,7 +10,7 @@ let userOutOfBounds = false;
 let userInHole = false;
 
 function checkMove(field, position) {
-        if (field[0].length > position[0] >= 0 && field.length > position[1] >= 0) {
+        if (field[0].length - 1 > position[0] >= 0 && field.length - 1 > position[1] >= 0) {
             if (field[position[0]][position[1]] == hole) {
                 userInHole = true;
             }
@@ -30,6 +30,8 @@ class Field {
     constructor(fieldArray) {
         this.field = fieldArray;
         this.position = [0, 0];
+        this.win = false;
+        this.hole = false;
     }
     
     print() {
@@ -49,6 +51,9 @@ class Field {
     }
 
     moveDown() {
+        if (this.position[0] === this.field.length - 1) {
+            throw Error('You went out of bounds.');
+        }
         const y = this.position[0] + 1;
         const x = this.position[1];
         this.position = [y, x];
@@ -56,6 +61,9 @@ class Field {
     }
 
     moveRight() {
+        if (this.position[1] === this.field[0].length - 1) {
+            throw Error('You went out of bounds.');
+        }
         const y = this.position[0];
         const x = this.position[1] + 1;
         this.position = [y, x];
@@ -72,6 +80,18 @@ class Field {
         checkMove(this.field, this.position);
     }
 
+    checkMove() {
+        if (this.field[this.position[0]][this.position[1]] == hole) {
+                this.hole = true;
+        }
+        else if (this.field[this.position[0]][this.position[1]] == hat) {
+                this.win = true;
+        }
+        else {
+                this.field[this.position[0]][this.position[1]] = pathCharacter;
+        }
+    }
+
     static generateField() {
 
     }
@@ -83,7 +103,7 @@ function main() {
         ['░', 'O', '░'],
         ['░', '^', '░']
       ]);
-    while (!userWin || !userOutOfBounds || !userInHole) {
+    while (!myField.win || !myField.hole) {
         myField.print();
         let direction = prompt('Which direction would you like to go? ');
         direction.trim().toLowerCase();
@@ -104,15 +124,13 @@ function main() {
             default:
                 console.log('Enter a valid direction.');
         }
+        myField.checkMove();
     }
 
-    if (userWin) {
+    if (myField.win) {
         console.log('You found your hat!');
     }
-    else if (userOutOfBounds) {
-        console.log('You went out of bounds.');
-    }
-    else if (userInHole) {
+    else if (myField.hole) {
         console.log('You fell in a hole.');
     }
     else {
