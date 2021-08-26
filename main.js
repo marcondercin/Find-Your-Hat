@@ -5,23 +5,28 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
+let userWin = false;
+let userOutOfBounds = false;
+let userInHole = false;
+
 function checkMove(field, position) {
         if (field[0].length > position[0] >= 0 && field.length > position[1] >= 0) {
             if (field[position[0]][position[1]] == hole) {
-                console.log('Game over');
+                userInHole = true;
+                console.log('You fell in a hole.');
             }
             else if (field[position[0]][position[1]] == hat) {
-                console.log('You win');
+                userWin = true;
+                console.log('You found your hat!');
             }
             else {
                 field[position[0]][position[1]] = pathCharacter;
             }
         }
         else {
-            throw Error('Out of bounds');
+            userOutOfBounds = true;
         }
     }
-
 
 class Field {
     constructor(fieldArray) {
@@ -37,7 +42,8 @@ class Field {
 
     moveUp() {
         if (this.position[0] === 0) {
-            throw Error('Out of bounds.');
+            userOutOfBounds = true;
+            break;
         }
         const y = this.position[0] - 1;
         const x = this.position[1];
@@ -74,11 +80,26 @@ class Field {
     }
 }
 
-const myField = new Field([
-    ['*', '░', 'O'],
-    ['░', 'O', '░'],
-    ['░', '^', '░']
-  ]);
+function main() {
+    const myField = new Field([
+        ['*', '░', 'O'],
+        ['░', 'O', '░'],
+        ['░', '^', '░']
+      ]);
+    while (!userWin || !userOutOfBounds || !userInHole) {
+        myField.print();
+        let direction = prompt('Which direction would you like to go? ');
+        direction.trim().toLowerCase();
 
-//myField.print();
-myField.moveUp();
+        switch (direction) {
+            case 'up':
+                myField.moveUp();
+            case 'down':
+                myField.moveDown();
+            case 'left':
+                myField.moveLeft();
+            case 'right':
+                myField.moveRight();
+        }
+    }
+}
