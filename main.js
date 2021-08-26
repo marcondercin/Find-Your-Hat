@@ -100,6 +100,23 @@ function main() {
                 myField.moveLeft();
             case 'right':
                 myField.moveRight();
+            default:
+                console.log('Enter a valid direction.');
         }
     }
+
+    if (userWin) {
+        console.log('You found your hat!');
+    }
+    else if (userOutOfBounds) {
+        console.log('You went out of bounds.');
+    }
+    else if (userInHole) {
+        console.log('You fell in a hole.');
+    }
+    else {
+        console.log('Why are you here?');
+    }
 }
+
+main();
