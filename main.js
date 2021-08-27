@@ -5,27 +5,6 @@ const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
 
-let userWin = false;
-let userOutOfBounds = false;
-let userInHole = false;
-
-function checkMove(field, position) {
-        if (field[0].length - 1 > position[0] >= 0 && field.length - 1 > position[1] >= 0) {
-            if (field[position[0]][position[1]] == hole) {
-                userInHole = true;
-            }
-            else if (field[position[0]][position[1]] == hat) {
-                userWin = true;
-            }
-            else {
-                field[position[0]][position[1]] = pathCharacter;
-            }
-        }
-        else {
-            userOutOfBounds = true;
-        }
-    }
-
 class Field {
     constructor(fieldArray) {
         this.field = fieldArray;
@@ -47,7 +26,6 @@ class Field {
         const y = this.position[0] - 1;
         const x = this.position[1];
         this.position = [y, x];
-        checkMove(this.field, this.position);
     }
 
     moveDown() {
@@ -57,7 +35,6 @@ class Field {
         const y = this.position[0] + 1;
         const x = this.position[1];
         this.position = [y, x];
-        checkMove(this.field, this.position);
     }
 
     moveRight() {
@@ -67,7 +44,6 @@ class Field {
         const y = this.position[0];
         const x = this.position[1] + 1;
         this.position = [y, x];
-        checkMove(this.field, this.position);
     }
 
     moveLeft() {
@@ -77,14 +53,13 @@ class Field {
         const y = this.position[0];
         const x = this.position[1] - 1;
         this.position = [y, x];
-        checkMove(this.field, this.position);
     }
 
     checkMove() {
-        if (this.field[this.position[0]][this.position[1]] == hole) {
+        if (this.field[this.position[0]][this.position[1]] === hole) {
                 this.hole = true;
         }
-        else if (this.field[this.position[0]][this.position[1]] == hat) {
+        else if (this.field[this.position[0]][this.position[1]] === hat) {
                 this.win = true;
         }
         else {
@@ -99,11 +74,12 @@ class Field {
 
 function main() {
     const myField = new Field([
-        ['*', '░', 'O'],
-        ['░', 'O', '░'],
-        ['░', '^', '░']
+        ['*', '░', '░', 'O'],
+        ['░', 'O', '░', '░'],
+        ['░', '^', 'O', '░'],
+        ['░', '░', '░', '░']
       ]);
-    while (!myField.win || !myField.hole) {
+    while (!myField.win && !myField.hole) {
         myField.print();
         let direction = prompt('Which direction would you like to go? ');
         direction.trim().toLowerCase();
