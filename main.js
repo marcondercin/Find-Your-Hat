@@ -67,18 +67,43 @@ class Field {
         }
     }
 
-    static generateField() {
-
+    static generateField(x, y) {
+        let newField = [];
+        let tempArray = [];
+        let isHat = false;
+        for (let i = 0; i < y; i++) {
+            for (let j = 0; j < x; j++) {
+                let num = Math.floor(Math.random() * 10);
+                if (i === 0 && j === 0) {
+                    tempArray.push(pathCharacter);
+                }
+                else {
+                    if (num >= 7) {
+                        tempArray.push(hole);
+                    }
+                    else {
+                        tempArray.push(fieldCharacter);
+                    }
+                }
+            }
+            newField.push(tempArray);
+            tempArray = [];
+        }
+        while (!isHat) {
+            let index_x = Math.floor(Math.random() * x);
+            let index_y = Math.floor(Math.random() * y);
+            if (newField[index_y][index_x] === fieldCharacter) {
+                newField[index_y][index_x] = hat;
+                isHat = true;
+            }
+        }
+        return newField;
     }
 }
 
 function main() {
-    const myField = new Field([
-        ['*', '░', '░', 'O'],
-        ['░', 'O', '░', '░'],
-        ['░', '^', 'O', '░'],
-        ['░', '░', '░', '░']
-      ]);
+    const field = Field.generateField(5, 5);
+    const myField = new Field(field);
     while (!myField.win && !myField.hole) {
         myField.print();
         let direction = prompt('Which direction would you like to go? ');
