@@ -106,8 +106,7 @@ function main() {
     const myField = new Field(field);
     while (!myField.win && !myField.hole) {
         myField.print();
-        let direction = prompt('Which direction would you like to go? ');
-        direction.trim().toLowerCase();
+        let direction = prompt('Which direction would you like to go? ').trim().toLowerCase();
 
         switch (direction) {
             case 'up':
