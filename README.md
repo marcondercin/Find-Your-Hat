@@ -1,4 +1,4 @@
-# Find-Your-Hat
+# Find Your Hat
 
 This is a simple terminal game that takes user input in the form of a direction to find an object (hat) in a maze-like map with traps. It consists of a player character (\*), holes (O), and a hat (^). You must give directions either up, down, left or right to navigate around the holes and reach your hat.
 
